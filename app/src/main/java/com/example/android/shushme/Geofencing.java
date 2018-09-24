@@ -1,20 +1,20 @@
 package com.example.android.shushme;
 
 /*
-* Copyright (C) 2017 The Android Open Source Project
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*  	http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright (C) 2017 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -62,6 +62,8 @@ public class Geofencing implements ResultCallback {
      * Triggers {@link #onResult} when the geofences have been registered successfully
      */
     public void registerAllGeofences() {
+        Log.v(TAG, "-> registerAllGeofences");
+
         // Check that the API client is connected and that the list has Geofences in it
         if (mGoogleApiClient == null || !mGoogleApiClient.isConnected() ||
                 mGeofenceList == null || mGeofenceList.size() == 0) {
@@ -87,6 +89,8 @@ public class Geofencing implements ResultCallback {
      * Triggers {@link #onResult} when the geofences have been unregistered successfully
      */
     public void unRegisterAllGeofences() {
+        Log.v(TAG, "-> unRegisterAllGeofences");
+
         if (mGoogleApiClient == null || !mGoogleApiClient.isConnected()) {
             return;
         }
@@ -102,7 +106,6 @@ public class Geofencing implements ResultCallback {
         }
     }
 
-
     /***
      * Updates the local ArrayList of Geofences using data from the passed in list
      * Uses the Place ID defined by the API as the Geofence object Id
@@ -110,6 +113,8 @@ public class Geofencing implements ResultCallback {
      * @param places the PlaceBuffer result of the getPlaceById call
      */
     public void updateGeofencesList(PlaceBuffer places) {
+        Log.v(TAG, "-> updateGeofencesList");
+
         mGeofenceList = new ArrayList<>();
         if (places == null || places.getCount() == 0) return;
         for (Place place : places) {
@@ -136,6 +141,8 @@ public class Geofencing implements ResultCallback {
      * @return the GeofencingRequest object
      */
     private GeofencingRequest getGeofencingRequest() {
+        Log.v(TAG, "-> getGeofencingRequest");
+
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
         builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
         builder.addGeofences(mGeofenceList);
@@ -149,6 +156,8 @@ public class Geofencing implements ResultCallback {
      * @return the PendingIntent object
      */
     private PendingIntent getGeofencePendingIntent() {
+        Log.v(TAG, "-> getGeofencePendingIntent");
+
         // Reuse the PendingIntent if we already have it.
         if (mGeofencePendingIntent != null) {
             return mGeofencePendingIntent;
@@ -161,7 +170,7 @@ public class Geofencing implements ResultCallback {
 
     @Override
     public void onResult(@NonNull Result result) {
-        Log.e(TAG, String.format("Error adding/removing geofence : %s",
+        Log.e(TAG, String.format("-> Error adding/removing geofence : %s",
                 result.getStatus().toString()));
     }
 
